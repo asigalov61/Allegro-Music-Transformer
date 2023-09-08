@@ -23,7 +23,7 @@
 [colab-notebook3]: <https://colab.research.google.com/github/asigalov61/Allegro-Music-Transformer/blob/main/Allegro_Music_Transformer_Composer.ipynb>
 [colab-badge]: <https://colab.research.google.com/assets/colab-badge.svg>
 
-### Features demonstration
+### MuseNet-style workflow for endless supervised continuation generation
 
 ***
 
