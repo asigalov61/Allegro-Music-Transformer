@@ -16,6 +16,17 @@
 
 ***
 
+## Composer Version
+
+[![Open In Colab][colab-badge]][colab-notebook3]
+
+[colab-notebook3]: <https://colab.research.google.com/github/asigalov61/Allegro-Music-Transformer/blob/main/Allegro_Music_Transformer_Composer.ipynb>
+[colab-badge]: <https://colab.research.google.com/assets/colab-badge.svg>
+
+### Features demonstration
+
+***
+
 ## Notes on the results
 
 ### 1) Adding chords counters tokens did not improve the result much
