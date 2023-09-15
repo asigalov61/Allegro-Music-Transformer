@@ -23,5 +23,13 @@
 
 ***
 
+## Notes on the results
+
+### 1) Adding chords counters tokens did not improve the result much
+### 2) Asymmetrical encoding also showed inferior results (higher loss/lower acc) compared to symmetrical encoding
+### 3) The model plays and works exceptionally well :) Probably because of the very same chords counter tokens and sane size. Or maybe it is just the matter of probabilities (read - luck) ?!?
+
+***
+
 ### Project Los Angeles
 ### Tegridy Code 2023
