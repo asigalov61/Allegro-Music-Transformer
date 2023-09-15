@@ -151,6 +151,7 @@ def GenerateMIDI(num_tok, idrums, iinstr, progress=gr.Progress()):
       y.append(s[4])
       c.append(colors[s[3]])
 
+    plt.close()
     plt.figure(figsize=(14,5))
     ax=plt.axes(title='Allegro Music Transformer Composition')
     ax.set_facecolor('black')
