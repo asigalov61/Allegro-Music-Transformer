@@ -5,6 +5,10 @@
 
 ***
 
+## 🎵🎶[Allegro Music Transformer on SoundCloud](https://soundcloud.com/aleksandr-sigalov-61/sets/allegro-music-transformer)🎶🎵
+
+***
+
 ## Original Version
 
 [![Open In Colab][colab-badge]][colab-notebook2]
