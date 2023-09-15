@@ -9,6 +9,10 @@
 
 ***
 
+## 🤗[Allegro Music Transformer LIVE demo on Hugging Face](https://huggingface.co/spaces/asigalov61/Allegro-Music-Transformer)🤗
+
+***
+
 ## Original Version
 
 [![Open In Colab][colab-badge]][colab-notebook2]
