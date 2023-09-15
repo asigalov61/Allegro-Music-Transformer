@@ -30,7 +30,7 @@
 ## Notes on the results
 
 ### 1) Adding chords counters tokens did not improve the result much
-### 2) Asymmetrical encoding also showed inferrior results (higher loss/lower acc) comapred to symmetrical encoding
+### 2) Asymmetrical encoding also showed inferior results (higher loss/lower acc) compared to symmetrical encoding
 
 ***
 
