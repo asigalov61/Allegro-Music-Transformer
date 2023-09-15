@@ -83,7 +83,7 @@ def GenerateMIDI(num_tok, idrums, iinstr):
     pitch = 0
     channel = 0
 
-    for i in range(num_tok):
+    for i in range(max(1, min(512, num_tok))):
         inp = torch.LongTensor([outy]).cpu()
 
         out = model.module.generate(inp,
@@ -225,7 +225,7 @@ if __name__ == "__main__":
             " for faster execution and endless generation"
         )
         js_msg = JSMsgReceiver()
-        input_drums = gr.Checkbox(label="Drums Controls", value=False, info="Drums present or not")
+        input_drums = gr.Checkbox(label="Add Drums", value=False, info="Add drums to the composition")
         input_instrument = gr.Radio(
             ["Piano", "Guitar", "Bass", "Violin", "Cello", "Harp", "Trumpet", "Sax", "Flute", "Choir", "Organ"],
             value="Piano", label="Lead Instrument Controls", info="Desired lead instrument")
