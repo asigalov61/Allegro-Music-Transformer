@@ -168,16 +168,33 @@ class MidiVisualizer extends HTMLElement{
 
     }
 
-    getColor(track, channel){
-        let key = `${track},${channel}`;
-        let color = this.colorMap.get(key);
-        if(!!color){
-            return color;
-        }
-        color = HSVtoRGB(Math.random(),Math.random()*0.5 + 0.5,1);
-        this.colorMap.set(key, color);
-        return color;
+    getColor(track, channel) {
+    const colors = [
+        [255, 0, 0],      // Red
+        [255, 255, 0],    // Yellow
+        [0, 128, 0],      // Green
+        [0, 255, 255],    // Cyan
+        [0, 0, 255],      // Blue
+        [255, 192, 203],  // Pink
+        [255, 165, 0],    // Orange
+        [128, 0, 128],    // Purple
+        [128, 128, 128],  // Gray
+        [255, 255, 255],  // White
+        [255, 215, 0],    // Gold
+        [192, 192, 192]   // Silver
+    ];
+
+    // Calculate an index based on the track and channel
+    const index = (track + channel) % colors.length;
+
+    // Get the RGB values from the colors array
+    const [r, g, b] = colors[index];
+
+    // Return the RGB color in the format "rgb(r, g, b)"
+    return { r, g, b };
+
     }
+
 
     drawNote(x, y, w, h, fill) {
         if (!this.svg) {
