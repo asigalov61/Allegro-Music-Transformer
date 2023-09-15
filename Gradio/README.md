@@ -10,5 +10,9 @@
 
 ***
 
+## Special thanks go out to [SkyTNT](https://github.com/SkyTNT/midi-model) for fantastic FluidSynth Synthesizer and MIDI Visualizer code
+
+***
+
 ### Project Los Angeles
 ### Tegridy Code 2023
