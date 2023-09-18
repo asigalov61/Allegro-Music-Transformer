@@ -66,7 +66,7 @@ import torch
 # %cd /content/Allegro-Music-Transformer
 
 import TMIDIX
-from x_transformer import TransformerWrapper, Decoder, AutoregressiveWrapper
+from x_transformer import *
 
 # %cd /content/
 print('=' * 70)
