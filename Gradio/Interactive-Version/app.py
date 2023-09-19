@@ -3,6 +3,10 @@ import glob
 import json
 import os.path
 
+import time
+import datetime
+from pytz import timezone
+
 import torch
 import torch.nn.functional as F
 
@@ -18,16 +22,19 @@ import matplotlib.pyplot as plt
 
 in_space = os.getenv("SYSTEM") == "spaces"
 
-
 # =================================================================================================
 
 @torch.no_grad()
 def GenerateMIDI(num_tok, idrums, iinstr):
     print('=' * 70)
-    print('Req num tok', num_tok)
-    print('Req instr', iinstr)
-    print('Drums', idrums)
-    print('=' * 70)
+    print('Req start time: {:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now(PDT)))
+    start_time = time.time()
+
+    print('-' * 70)
+    print('Req num tok:', num_tok)
+    print('Req instr:', iinstr)
+    print('Drums:', idrums)
+    print('-' * 70)
 
     if idrums:
         drums = 3074
@@ -42,7 +49,7 @@ def GenerateMIDI(num_tok, idrums, iinstr):
 
     print('Selected Improv sequence:')
     print(start_tokens)
-    print('=' * 70)
+    print('-' * 70)
 
     output_signature = 'Allegro Music Transformer'
     output_file_name = 'Allegro-Music-Transformer-Music-Composition'
@@ -77,13 +84,15 @@ def GenerateMIDI(num_tok, idrums, iinstr):
     yield output, None, None, [create_msg("visualizer_clear", None)]
 
     outy = start_tokens
-    time = 0
+    
+    ctime = 0
     dur = 0
-    vel = 0
+    vel = 90
     pitch = 0
     channel = 0
 
     for i in range(max(1, min(512, num_tok))):
+        
         inp = torch.LongTensor([outy]).cpu()
 
         out = model.module.generate(inp,
@@ -94,10 +103,11 @@ def GenerateMIDI(num_tok, idrums, iinstr):
 
         out0 = out[0].tolist()
         outy.extend(out0)
-        ss1 = int(out0[0])
+        
+        ss1 = out0[0]
 
         if 0 < ss1 < 256:
-            time += ss1 * 8
+            ctime += ss1 * 8
 
         if 256 <= ss1 < 1280:
             dur = ((ss1 - 256) // 8) * 32
@@ -106,7 +116,7 @@ def GenerateMIDI(num_tok, idrums, iinstr):
         if 1280 <= ss1 < 2816:
             channel = (ss1 - 1280) // 128
             pitch = (ss1 - 1280) % 128
-            event = ['note', int(time), int(dur), int(channel), int(pitch), int(vel)]
+            event = ['note', ctime, dur, channel, pitch, vel]
             output[-1].append(event)
 
             yield output, None, None, [create_msg("visualizer_append", event), create_msg("progress", [i + 1, num_tok])]
@@ -117,7 +127,15 @@ def GenerateMIDI(num_tok, idrums, iinstr):
         f.write(midi_data)
 
     audio = synthesis(TMIDIX.score2opus(output), 'SGM-v2.01-YamahaGrand-Guit-Bass-v2.7.sf2')
-
+    
+    print('Sample INTs', outy[:16])
+    print('-' * 70)
+    print('Last generated MIDI event', output[2][-1])
+    print('-' * 70)
+    print('Req end time: {:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now(PDT)))
+    print('-' * 70)
+    print('Req execution time:', (time.time() - start_time), 'sec')
+    
     yield output, "Allegro-Music-Transformer-Music-Composition.mid", (44100, audio), [
         create_msg("visualizer_end", None)]
 
@@ -176,11 +194,18 @@ def create_msg(name, data):
 
 
 if __name__ == "__main__":
+    
+    PDT = timezone('US/Pacific')
+    
+    print('=' * 70)
+    print('App start time: {:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now(PDT)))
+    print('=' * 70)
+    
     parser = argparse.ArgumentParser()
     parser.add_argument("--share", action="store_true", default=False, help="share gradio app")
     parser.add_argument("--port", type=int, default=7860, help="gradio server port")
     opt = parser.parse_args()
-
+    
     print('Loading model...')
 
     SEQ_LEN = 2048
@@ -190,7 +215,7 @@ if __name__ == "__main__":
     model = TransformerWrapper(
         num_tokens=3088,
         max_seq_len=SEQ_LEN,
-        attn_layers=Decoder(dim=1024, depth=32, heads=8)
+        attn_layers=Decoder(dim=1024, depth=16, heads=8)
     )
 
     model = AutoregressiveWrapper(model)
@@ -203,13 +228,14 @@ if __name__ == "__main__":
     print('Loading model checkpoint...')
 
     model.load_state_dict(
-        torch.load('Allegro_Music_Transformer_Small_Trained_Model_56000_steps_0.9399_loss_0.7374_acc.pth',
+        torch.load('Allegro_Music_Transformer_Tiny_Trained_Model_80000_steps_0.9457_loss_0.7443_acc.pth',
                    map_location='cpu'))
     print('=' * 70)
 
     model.eval()
 
     print('Done!')
+    print('=' * 70)
 
     load_javascript()
     app = gr.Blocks()
