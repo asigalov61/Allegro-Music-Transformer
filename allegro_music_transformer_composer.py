@@ -298,9 +298,6 @@ print('=' * 70)
 
 melody_chords_f = []
 
-# Convering MIDI to ms score with MIDI.py module
-score = TMIDIX.midi2ms_score(open(f, 'rb').read())
-
 # INSTRUMENTS CONVERSION CYCLE
 events_matrix = []
 itrack = 1
