@@ -304,6 +304,9 @@ if plot_tokens_embeddings:
 """# (LOAD SEED MIDI)"""
 
 #@title Load Seed MIDI
+
+#@markdown Press play button to to upload your own seed MIDI or to load one of the provided sample seed MIDIs from the dropdown list below
+
 select_seed_MIDI = "Upload your own custom MIDI" #@param ["Upload your own custom MIDI", "Allegro-Music-Transformer-Piano-Seed-1", "Allegro-Music-Transformer-Piano-Seed-2", "Allegro-Music-Transformer-Piano-Seed-3", "Allegro-Music-Transformer-Piano-Seed-4", "Allegro-Music-Transformer-Piano-Seed-5", "Allegro-Music-Transformer-MI-Seed-1", "Allegro-Music-Transformer-MI-Seed-2", "Allegro-Music-Transformer-MI-Seed-3", "Allegro-Music-Transformer-MI-Seed-4", "Allegro-Music-Transformer-MI-Seed-5"]
 number_of_prime_tokens = 300 # @param {type:"slider", min:128, max:5000, step:16}
 render_MIDI_to_audio = False # @param {type:"boolean"}
