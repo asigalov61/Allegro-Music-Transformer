@@ -701,7 +701,7 @@ if block_action == 'add_last_generated_block':
   melody_chords_f.extend(out0[min(len(out0)-1, add_block_with_batch_number)])
   print('Block added!')
 else:
- if len(block_tokens) > 1:
+  if len(block_tokens) > 1:
     melody_chords_f = melody_chords_f[:(len(melody_chords_f)-block_tokens[-1])]
     print('Block removed!')
   else:
