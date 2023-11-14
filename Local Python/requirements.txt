@@ -1,0 +1,7 @@
+huggingface_hub
+torch
+einops
+torch-summary
+tqdm
+matplotlib
+midi2audio

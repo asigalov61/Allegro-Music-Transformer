@@ -1,0 +1,45 @@
+{
+    "general": {
+        "first_note_instrument": "Piano",
+        "add_drums": false,
+        "number_of_tokens_to_generate": 300,
+        "number_of_batches_to_generate": 4,
+        "temperature": 0.9,
+        "render_MIDI_to_audio": true
+    },
+    "seed_midi": {
+        "select_seed_MIDI": "Allegro-Music-Transformer-Piano-Seed-1",
+        "render_MIDI_to_audio": false
+    },
+    "continuation": {
+        "try_to_generate_outro": false,
+        "number_of_prime_tokens": 300,
+        "include_prime_tokens_in_generated_output": true,
+        "allow_model_to_stop_generation_if_needed": false
+    },
+    "inpainting": {
+        "Piano": false,
+        "Guitar": false,
+        "Bass": false,
+        "Violin": false,
+        "Cello": false,
+        "Harp": false,
+        "Trumpet": false,
+        "Sax": false,
+        "Flute": false,
+        "Choir": false,
+        "Organ": false,
+        "number_of_memory_tokens": 2044,
+        "number_of_samples_per_inpainted_note": 1
+    },
+    "model": {
+        "model_precision": "float16",
+        "seq_len": 2048,
+        "num_tokens": 3088,
+        "dim": 1024,
+        "depth": 16,
+        "heads": 8,
+        "attn_flash": true,
+        "full_path_to_model_checkpoint": "path_to_your_model_checkpoint.pth"
+    }
+}
