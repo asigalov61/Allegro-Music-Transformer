@@ -42,40 +42,81 @@ def load_config(config_path):
 
 # Load and set up the model based on the configuration
 def setup_model(model_config):
-    # Set up the device for model training/inference
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    # Load the model configuration
+    full_path_to_model_checkpoint = model_config['full_path_to_model_checkpoint']
     
-    # Define the model architecture
+    # Load the model precision
+    model_precision = model_config['model_precision']
+    
+    # Chose if the plot tokens embeddings should be plotted
+    plot_tokens_embeddings = model_config['plot_tokens_embeddings']
+    
+    print('=' * 70)
+    print('Loading Allegro Music Transformer Tiny Pre-Trained Model...')
+    print('Please wait...')
+    print('=' * 70)
+    
+    if os.path.isfile(full_path_to_model_checkpoint):
+        print('Model already exists...')
+    else:
+        hf_hub_download(repo_id='asigalov61/Allegro-Music-Transformer',
+                        filename='Allegro_Music_Transformer_Tiny_Trained_Model_80000_steps_0.9457_loss_0.7443_acc.pth',
+                        local_dir='/content/Allegro-Music-Transformer/Models/Tiny/',
+                        local_dir_use_symlinks=False)
+    print('=' * 70)
+    print('Instantiating model...')
+    
+    torch.backends.cuda.matmul.allow_tf32 = True # allow tf32 on matmul
+    torch.backends.cudnn.allow_tf32 = True # allow tf32 on cudnn
+    device_type = 'cuda'
+
+    if model_precision == 'bfloat16' and torch.cuda.is_bf16_supported():
+        dtype = 'bfloat16'
+    else:
+        dtype = 'float16'
+
+    if model_precision == 'float16':
+        dtype = 'float16'
+
+    if model_precision == 'float32':
+        dtype = 'float32'
+
+    ptdtype = {'float32': torch.float32, 'bfloat16': torch.bfloat16, 'float16': torch.float16}[dtype]
+    ctx = torch.amp.autocast(device_type=device_type, dtype=ptdtype)
+
+        
+    # instantiate the model
+
     model = TransformerWrapper(
-        num_tokens=model_config['num_tokens'],
-        max_seq_len=model_config['seq_len'],
-        attn_layers=Decoder(
-            dim=model_config['dim'],
-            depth=model_config['depth'],
-            heads=model_config['heads'],
-            attn_dropout=model_config['attn_dropout'],
-            ff_dropout=model_config['ff_dropout'],
-            attn_flash=model_config['attn_flash']
-        )
+        num_tokens = model_config['num_tokens'],
+        max_seq_len = model_config['seq_len'],
+        attn_layers = Decoder(dim = 1024, depth = 16, heads = 8, attn_flash=True)
     )
 
     model = AutoregressiveWrapper(model)
 
-    # Load the model checkpoint
-    checkpoint_path = model_config['full_path_to_model_checkpoint']
-    model.load_state_dict(torch.load(checkpoint_path, map_location=device))
+    model = torch.nn.DataParallel(model)
 
-    # Put the model into evaluation mode
+    model.cuda()
+    print('=' * 70)
+
+    print('Loading model checkpoint...')
+
+    model.load_state_dict(torch.load(full_path_to_model_checkpoint))
+    print('=' * 70)
+
     model.eval()
 
-    # Move the model to the appropriate device (GPU or CPU)
-    model.to(device)
+    print('Done!')
+    print('=' * 70)
+
+    print('Model will use', dtype, 'precision...')
+    print('=' * 70)
 
     return model
 
-# Main generation function
-def generate_music(general_config, model, device):
-    pass
+def model_stats(model):
+    
 
 # Seed MIDI processing
 def process_seed_midi(seed_midi_config):
