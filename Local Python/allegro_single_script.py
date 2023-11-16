@@ -115,8 +115,28 @@ def setup_model(model_config):
 
     return model
 
-def model_stats(model):
-    
+def model_stats(model_config, model):
+    print('Model summary...')
+    summary(model)
+
+    # Plot Token Embeddings
+
+    if model_config['plot_tokens_embeddings']:
+        tok_emb = model.module.net.token_emb.emb.weight.detach().cpu().tolist()
+
+        cos_sim = metrics.pairwise_distances(
+            tok_emb, metric='cosine'
+        )
+        plt.figure(figsize=(7, 7))
+        plt.imshow(cos_sim, cmap="inferno", interpolation="nearest")
+        im_ratio = cos_sim.shape[0] / cos_sim.shape[1]
+        plt.colorbar(fraction=0.046 * im_ratio, pad=0.04)
+        plt.xlabel("Position")
+        plt.ylabel("Position")
+        plt.tight_layout()
+        plt.plot()
+        plt.savefig("/content/Allegro-Music-Transformer-Small-Tokens-Embeddings-Plot.png", bbox_inches="tight")
+
 
 # Seed MIDI processing
 def process_seed_midi(seed_midi_config):
