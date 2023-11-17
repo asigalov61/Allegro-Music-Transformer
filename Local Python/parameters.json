@@ -8,7 +8,7 @@
         "render_MIDI_to_audio": true
     },
     "seed_midi": {
-        "select_seed_MIDI": "Allegro-Music-Transformer-Piano-Seed-1",
+        "midi_path": "piano.midi",
         "render_MIDI_to_audio": false
     },
     "continuation": {
@@ -40,6 +40,7 @@
         "depth": 16,
         "heads": 8,
         "attn_flash": true,
-        "full_path_to_model_checkpoint": "path_to_your_model_checkpoint.pth"
+        "full_path_to_model_checkpoint": "../Models",
+        "plot_tokens_embeddings": false
     }
 }
