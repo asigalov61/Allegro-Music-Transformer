@@ -1,7 +1,8 @@
 huggingface_hub
-torch
+ipython
 einops
 torch-summary
 tqdm
 matplotlib
 midi2audio
+scikit-learn

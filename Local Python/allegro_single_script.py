@@ -61,7 +61,7 @@ def setup_model(model_config):
     else:
         hf_hub_download(repo_id='asigalov61/Allegro-Music-Transformer',
                         filename='Allegro_Music_Transformer_Tiny_Trained_Model_80000_steps_0.9457_loss_0.7443_acc.pth',
-                        local_dir='/content/Allegro-Music-Transformer/Models/Tiny/',
+                        local_dir='../Models/Tiny/',
                         local_dir_use_symlinks=False)
     print('=' * 70)
     print('Instantiating model...')
@@ -135,7 +135,7 @@ def model_stats(model_config, model):
         plt.ylabel("Position")
         plt.tight_layout()
         plt.plot()
-        plt.savefig("/content/Allegro-Music-Transformer-Small-Tokens-Embeddings-Plot.png", bbox_inches="tight")
+        plt.savefig("content/Allegro-Music-Transformer-Small-Tokens-Embeddings-Plot.png", bbox_inches="tight")
 
 
 # Seed MIDI processing
@@ -143,11 +143,10 @@ def process_seed_midi(seed_midi_config, midi_file):
     print('=' * 70)
     print('Allegro Music Transformer Seed MIDI Loader')
     print('=' * 70)
-
-    uploaded_MIDI = midi_file
-    if list(uploaded_MIDI.keys()):
+        
+    if midi_file:
         score = TMIDIX.midi2single_track_ms_score(midi_file, recalculate_channels=False)
-        f = list(uploaded_MIDI.keys())[0]
+        f = midi_file
     
       
     if f != '':
@@ -338,7 +337,7 @@ def process_seed_midi(seed_midi_config, midi_file):
 
       detailed_stats = TMIDIX.Tegridy_ms_SONG_to_MIDI_Converter(song_f,
                                                                 output_signature = 'Allegro Music Transformer',
-                                                                output_file_name = '/content/Allegro-Music-Transformer-Seed-Composition',
+                                                                output_file_name = 'content/Allegro-Music-Transformer-Seed-Composition',
                                                                 track_name='Project Los Angeles',
                                                                 list_of_MIDI_patches=[0, 24, 32, 40, 42, 46, 56, 65, 73, 0, 53, 19, 0, 0, 0, 0]
                                                                 )
@@ -352,7 +351,7 @@ def process_seed_midi(seed_midi_config, midi_file):
       print('Composition has', len(melody_chords_f), 'tokens')
       print('=' * 70)
 
-      fname = '/content/Allegro-Music-Transformer-Seed-Composition'
+      fname = 'content/Allegro-Music-Transformer-Seed-Composition'
 
       x = []
       y =[]
@@ -527,18 +526,20 @@ def perform_inpainting(inpainting_config, model, melody_chords_f, ctx):
 
       detailed_stats = TMIDIX.Tegridy_ms_SONG_to_MIDI_Converter(song_f,
                                                                 output_signature = 'Allegro Music Transformer',
-                                                                output_file_name = '/content/Allegro-Music-Transformer-Composition',
+                                                                output_file_name = 'content/Allegro-Music-Transformer-Composition',
                                                                 track_name='Project Los Angeles',
                                                                 list_of_MIDI_patches=[0, 24, 32, 40, 42, 46, 56, 65, 73, 0, 53, 19, 0, 0, 0, 0]
                                                                 )
 
-
-
+      # print('=' * 70)
+      # print('Composition stats:')
+      # print(detailed_stats)
+      
       print('=' * 70)
       print('Displaying resulting composition...')
       print('=' * 70)
 
-      fname = '/content/Allegro-Music-Transformer-Composition'
+      fname = 'content/Allegro-Music-Transformer-Composition'
 
       x = []
       y =[]
@@ -582,3 +583,5 @@ if __name__ == "__main__":
     # Perform inpainting if any instrument is set to True
     if any(value for key, value in config['inpainting'].items() if key != "number_of_memory_tokens" and key != "number_of_samples_per_inpainted_note"):
         inpainted_music = perform_inpainting(config['inpainting'], model, melody_chords, ctx)
+    else:
+        print('No inpainting will be performed. Please set at least one instrument to True in the inpainting section of the parameters.json file.')
