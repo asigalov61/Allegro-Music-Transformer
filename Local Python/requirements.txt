@@ -1,0 +1,8 @@
+huggingface_hub
+ipython
+einops
+torch-summary
+tqdm
+matplotlib
+midi2audio
+scikit-learn
