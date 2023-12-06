@@ -80,7 +80,7 @@ from IPython.display import Audio, display
 
 from huggingface_hub import hf_hub_download
 
-from google.colab import files
+from importlib.resources import files
 
 print('=' * 70)
 print('Done!')
