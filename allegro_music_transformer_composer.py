@@ -589,6 +589,8 @@ print('=' * 70)
 print('Allegro Music Transformer Standard Continuation Model Generator')
 print('=' * 70)
 
+torch.cuda.empty_cache()
+
 preview = melody_chords_f[-preview_length_in_tokens:]
 
 inp = [melody_chords_f[-number_of_memory_tokens:]] * number_of_batches_to_generate
@@ -603,6 +605,8 @@ with ctx:
                               verbose=True)
 
 out0 = out.tolist()
+
+torch.cuda.empty_cache()
 
 print('=' * 70)
 print('Done!')

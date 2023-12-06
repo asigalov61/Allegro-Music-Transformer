@@ -28,20 +28,20 @@ WARNING: This complete implementation is a functioning model of the Artificial I
 """
 
 #@title NVIDIA GPU check
-# !nvidia-smi
+!nvidia-smi
 
-# """# (SETUP ENVIRONMENT)"""
+"""# (SETUP ENVIRONMENT)"""
 
-# #@title Install dependencies
-# !git clone --depth 1 https://github.com/asigalov61/Allegro-Music-Transformer
-# !pip install huggingface_hub
-# !pip install torch
-# !pip install einops
-# !pip install torch-summary
-# !pip install tqdm
-# !pip install matplotlib
-# !apt install fluidsynth #Pip does not work for some reason. Only apt works
-# !pip install midi2audio
+#@title Install dependencies
+!git clone --depth 1 https://github.com/asigalov61/Allegro-Music-Transformer
+!pip install huggingface_hub
+!pip install torch
+!pip install einops
+!pip install torch-summary
+!pip install tqdm
+!pip install matplotlib
+!apt install fluidsynth #Pip does not work for some reason. Only apt works
+!pip install midi2audio
 
 # Commented out IPython magic to ensure Python compatibility.
 #@title Import modules
@@ -49,7 +49,6 @@ WARNING: This complete implementation is a functioning model of the Artificial I
 print('=' * 70)
 print('Loading core Allegro Music Transformer modules...')
 
-from importlib.resources import files
 import os
 import pickle
 import random
@@ -81,6 +80,7 @@ from IPython.display import Audio, display
 
 from huggingface_hub import hf_hub_download
 
+from google.colab import files
 
 print('=' * 70)
 print('Done!')
@@ -346,6 +346,8 @@ print('Selected Improv sequence:')
 print(outy)
 print('=' * 70)
 
+torch.cuda.empty_cache()
+
 inp = [outy] * number_of_batches_to_generate
 
 inp = torch.LongTensor(inp).cuda()
@@ -358,6 +360,8 @@ with ctx:
                         verbose=True)
 
 out0 = out.tolist()
+
+torch.cuda.empty_cache()
 
 print('=' * 70)
 print('Done!')
@@ -735,6 +739,8 @@ outy = melody_chords_f[:number_of_prime_tokens]
 if try_to_generate_outro:
   outy.extend([3072])
 
+torch.cuda.empty_cache()
+
 inp = [outy] * number_of_batches_to_generate
 
 inp = torch.LongTensor(inp).cuda()
@@ -748,6 +754,8 @@ with ctx:
                         verbose=True)
 
 out0 = out.tolist()
+
+torch.cuda.empty_cache()
 
 print('=' * 70)
 print('Done!')
@@ -904,6 +912,8 @@ print('=' * 70)
 print('Allegro Music Transformer Inpainting Model Generator')
 print('=' * 70)
 
+torch.cuda.empty_cache()
+
 out2 = []
 
 for m in melody_chords_f[:number_of_prime_tokens]:
@@ -950,6 +960,8 @@ for i in tqdm.tqdm(range(number_of_prime_tokens, len(melody_chords_f))):
   except Exception as e:
     print('Error', e)
     break
+
+torch.cuda.empty_cache()
 
 print('Done!')
 print('=' * 70)
