@@ -62,7 +62,7 @@ This guide provides detailed steps to install the Python version of Allegro on a
    - `piano.midi` is set as an example.
 
 8. **Get `FluidR3_GM.sf2` SoundFont**
-   - Download the sound font from [this link](https://example.com/FluidR3_GM.sf2).
+   - Download the sound font from [this link](https://member.keymusician.com/Member/FluidR3_GM/index.html).
    - Place the downloaded file in the project directory.
 
 9. **Use `parameters.json` for Configuration**
